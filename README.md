@@ -10,10 +10,10 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 
 ## Dados do Aluno
 
-- **Nome completo:** [Preencher aqui]
-- **Matrícula:** [Preencher aqui]
-- **Curso:** [Preencher aqui]
-- **Turma:** [Preencher aqui]
+- **Nome completo:** Luis Guilherme de Almeida Costa
+- **Matrícula:** 251037401
+- **Curso:** Orientação a Objetos
+- **Turma:** 2
 
 ---
 
