@@ -4,11 +4,27 @@
  */
 package TelasInternas;
 
+import Controllers.Pacientes;
+
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.Arrays;
+
+/**
+ *
+ * @author Luis53889806
+ */
 public class CadastroPacientes extends javax.swing.JInternalFrame {
 
     /**
@@ -37,10 +53,11 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         idadeTxt = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        CriarPaciente = new javax.swing.JLabel();
-        EditarPaciente = new javax.swing.JLabel();
-        RemoverPaciente = new javax.swing.JLabel();
-        ReiniciarListaPaciente = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -127,31 +144,38 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        CriarPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_add_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        CriarPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_add_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CriarPacienteMouseClicked(evt);
+                jLabel13MouseClicked(evt);
             }
         });
 
-        EditarPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/edit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        EditarPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/edit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EditarPacienteMouseClicked(evt);
+                jLabel14MouseClicked(evt);
             }
         });
 
-        RemoverPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_off_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        RemoverPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_off_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                RemoverPacienteMouseClicked(evt);
+                jLabel15MouseClicked(evt);
             }
         });
 
-        ReiniciarListaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        ReiniciarListaPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ReiniciarListaPacienteMouseClicked(evt);
+                jLabel2MouseClicked(evt);
+            }
+        });
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/search_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
             }
         });
 
@@ -159,6 +183,10 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(408, 408, 408))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -172,35 +200,29 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(CriarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(EditarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(101, 101, 101)
-                        .addComponent(RemoverPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(ReiniciarListaPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(407, 407, 407))))))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel1)))
+                .addGap(2, 2, 2)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -216,10 +238,11 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(CriarPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(EditarPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(RemoverPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ReiniciarListaPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -239,17 +262,29 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_idadeTxtActionPerformed
  
     
-    private void CriarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CriarPacienteMouseClicked
-        JOptionPane.showMessageDialog(null, nomeTxt.getText() + " " + cpfTxt.getText() + " " + idadeTxt.getText());
-    }//GEN-LAST:event_CriarPacienteMouseClicked
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        try {
+            Pacientes paciente1 = new Pacientes(nomeTxt.getText(), cpfTxt.getText(), 1 , Integer.parseInt(idadeTxt.getText()), "");
 
-    private void ReiniciarListaPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReiniciarListaPacienteMouseClicked
-       
-    }//GEN-LAST:event_ReiniciarListaPacienteMouseClicked
+            String pastaCaminho = "csv/pacientes.csv";
 
-    private void EditarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditarPacienteMouseClicked
+            FileWriter writer = new FileWriter(pastaCaminho, true);
+            StatefulBeanToCsv<Pacientes> beanToCsv = new StatefulBeanToCsvBuilder<Pacientes>(writer).build();
+            beanToCsv.write(paciente1);
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
        
-    }//GEN-LAST:event_EditarPacienteMouseClicked
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+       
+    }//GEN-LAST:event_jLabel14MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
       
@@ -259,19 +294,24 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
        
     }//GEN-LAST:event_jTable1AncestorAdded
 
-    private void RemoverPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RemoverPacienteMouseClicked
+    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
        
-    }//GEN-LAST:event_RemoverPacienteMouseClicked
+    }//GEN-LAST:event_jLabel15MouseClicked
+
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+       
+    }//GEN-LAST:event_jLabel12MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CriarPaciente;
-    private javax.swing.JLabel EditarPaciente;
-    private javax.swing.JLabel ReiniciarListaPaciente;
-    private javax.swing.JLabel RemoverPaciente;
     private javax.swing.JTextField cpfTxt;
     private javax.swing.JTextField idadeTxt;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

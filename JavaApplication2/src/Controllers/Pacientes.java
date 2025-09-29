@@ -3,7 +3,8 @@ import com.opencsv.bean.CsvBindByName;
 
 import java.util.ArrayList;
 
-public class Pacientes extends Pessoa {
+public class Pacientes extends Pessoa{
+
     @CsvBindByName(column = "id_pacientes")
     private int id_pacientes;
 
@@ -11,13 +12,25 @@ public class Pacientes extends Pessoa {
     private int idade;
 
     @CsvBindByName(column = "HistoricoDeConsultas")
-    private ArrayList<String> historicoConsultas;
+    private String historicoConsultas;
 
-    public Pacientes(String nome, String cpf, int id_pacientes, int idade, ArrayList<String> historicoConsultas) {
+    public Pacientes() {
+
+    }
+
+    public Pacientes(String nome, String cpf, int id_pacientes, int idade, String historicoConsultas) {
         super(nome, cpf);
         this.id_pacientes = id_pacientes;
         this.idade = idade;
-        this.historicoConsultas = new ArrayList<>();
+        this.historicoConsultas = "";
+    }
+
+    public int getId_pacientes() {
+        return id_pacientes;
+    }
+
+    public void setId_pacientes(int id_pacientes) {
+        this.id_pacientes = id_pacientes;
     }
 
     public int getIdade() {
@@ -28,11 +41,11 @@ public class Pacientes extends Pessoa {
         this.idade = idade;
     }
 
-    public ArrayList<String> getHistoricoConsultas() {
+    public String getHistoricoConsultas() {
         return historicoConsultas;
     }
 
-    public void setHistoricoConsultas(ArrayList<String> historicoConsultas) {
+    public void setHistoricoConsultas(String historicoConsultas) {
         this.historicoConsultas = historicoConsultas;
     }
 }
