@@ -14,6 +14,10 @@ public abstract class Pessoa {
     
     @CsvBindByName(column = "Cpf")
     private String cpf;
+
+    public Pessoa() {
+
+    }
     
     public Pessoa(String nome, String cpf) {
         this.nome = nome;

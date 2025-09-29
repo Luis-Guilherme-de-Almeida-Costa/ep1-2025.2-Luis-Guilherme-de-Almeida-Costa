@@ -5,28 +5,32 @@ import java.util.ArrayList;
 
 public class Pacientes extends Pessoa{
 
-    @CsvBindByName(column = "PlanoDeSaude")
-    private boolean planoSaude = false;
+    @CsvBindByName(column = "id_pacientes")
+    private int id_pacientes;
 
     @CsvBindByName(column = "Idade")
     private int idade;
 
     @CsvBindByName(column = "HistoricoDeConsultas")
-    private ArrayList<String> historicoConsultas;
+    private String historicoConsultas;
 
-    public Pacientes(String nome, String cpf, boolean planoSaude, int idade, ArrayList<String> historicoConsultas) {
+    public Pacientes() {
+
+    }
+
+    public Pacientes(String nome, String cpf, int id_pacientes, int idade, String historicoConsultas) {
         super(nome, cpf);
-        this.planoSaude = planoSaude;
+        this.id_pacientes = id_pacientes;
         this.idade = idade;
-        this.historicoConsultas = historicoConsultas;
+        this.historicoConsultas = "";
     }
 
-    public boolean isPlanoSaude() {
-        return planoSaude;
+    public int getId_pacientes() {
+        return id_pacientes;
     }
 
-    public void setPlanoSaude(boolean planoSaude) {
-        this.planoSaude = planoSaude;
+    public void setId_pacientes(int id_pacientes) {
+        this.id_pacientes = id_pacientes;
     }
 
     public int getIdade() {
@@ -37,11 +41,11 @@ public class Pacientes extends Pessoa{
         this.idade = idade;
     }
 
-    public ArrayList<String> getHistoricoConsultas() {
+    public String getHistoricoConsultas() {
         return historicoConsultas;
     }
 
-    public void setHistoricoConsultas(ArrayList<String> historicoConsultas) {
+    public void setHistoricoConsultas(String historicoConsultas) {
         this.historicoConsultas = historicoConsultas;
     }
 }

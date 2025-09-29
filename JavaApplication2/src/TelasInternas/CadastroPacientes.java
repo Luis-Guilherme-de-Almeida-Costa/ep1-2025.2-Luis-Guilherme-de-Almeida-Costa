@@ -4,10 +4,22 @@
  */
 package TelasInternas;
 
+import Controllers.Pacientes;
+
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  *
@@ -34,11 +46,11 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        tipo = new javax.swing.JTextField();
+        nomeTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        material = new javax.swing.JTextField();
-        tamanho = new javax.swing.JTextField();
+        cpfTxt = new javax.swing.JTextField();
+        idadeTxt = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
@@ -46,8 +58,6 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -59,11 +69,11 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         jLabel3.setText("Nome");
 
-        tipo.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        tipo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        tipo.addActionListener(new java.awt.event.ActionListener() {
+        nomeTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        nomeTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        nomeTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tipoActionPerformed(evt);
+                nomeTxtActionPerformed(evt);
             }
         });
 
@@ -73,19 +83,19 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         jLabel5.setText("Idade");
 
-        material.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        material.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        material.addActionListener(new java.awt.event.ActionListener() {
+        cpfTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        cpfTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        cpfTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                materialActionPerformed(evt);
+                cpfTxtActionPerformed(evt);
             }
         });
 
-        tamanho.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        tamanho.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        tamanho.addActionListener(new java.awt.event.ActionListener() {
+        idadeTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        idadeTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        idadeTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tamanhoActionPerformed(evt);
+                idadeTxtActionPerformed(evt);
             }
         });
 
@@ -169,12 +179,6 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        jLabel6.setText("Plano de Saúde");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Sim", "Não" }));
-        jComboBox1.setToolTipText("");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,24 +191,20 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tamanho)
-                    .addComponent(tipo)
-                    .addComponent(material)
+                    .addComponent(idadeTxt)
+                    .addComponent(nomeTxt)
+                    .addComponent(cpfTxt)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(243, 243, 243))
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(101, 101, 101)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -226,19 +226,15 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(material, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(idadeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -253,21 +249,33 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoActionPerformed
+    private void nomeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tipoActionPerformed
+    }//GEN-LAST:event_nomeTxtActionPerformed
 
-    private void materialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_materialActionPerformed
+    private void cpfTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_materialActionPerformed
+    }//GEN-LAST:event_cpfTxtActionPerformed
 
-    private void tamanhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tamanhoActionPerformed
+    private void idadeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idadeTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tamanhoActionPerformed
+    }//GEN-LAST:event_idadeTxtActionPerformed
  
     
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-       
+        try {
+            Pacientes paciente1 = new Pacientes(nomeTxt.getText(), cpfTxt.getText(), 1 , Integer.parseInt(idadeTxt.getText()), "");
+
+            String pastaCaminho = "csv/pacientes.csv";
+
+            FileWriter writer = new FileWriter(pastaCaminho, true);
+            StatefulBeanToCsv<Pacientes> beanToCsv = new StatefulBeanToCsvBuilder<Pacientes>(writer).build();
+            beanToCsv.write(paciente1);
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jLabel13MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -296,7 +304,8 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField cpfTxt;
+    private javax.swing.JTextField idadeTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -306,11 +315,8 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField material;
-    private javax.swing.JTextField tamanho;
-    private javax.swing.JTextField tipo;
+    private javax.swing.JTextField nomeTxt;
     // End of variables declaration//GEN-END:variables
 }

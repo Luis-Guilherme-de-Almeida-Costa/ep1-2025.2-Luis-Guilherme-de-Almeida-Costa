@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 public class Medicos extends Pessoa {
 
+    @CsvBindByName(column = "id_medicos")
+    private String id_medicos;
+
     @CsvBindByName(column = "Crm")
     private String crm;
 
