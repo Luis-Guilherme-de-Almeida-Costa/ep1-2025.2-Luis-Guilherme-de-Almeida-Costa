@@ -3,10 +3,9 @@ import com.opencsv.bean.CsvBindByName;
 
 import java.util.ArrayList;
 
-public class Pacientes extends Pessoa{
-
-    @CsvBindByName(column = "PlanoDeSaude")
-    private boolean planoSaude = false;
+public class Pacientes extends Pessoa {
+    @CsvBindByName(column = "id_pacientes")
+    private int id_pacientes;
 
     @CsvBindByName(column = "Idade")
     private int idade;
@@ -14,19 +13,11 @@ public class Pacientes extends Pessoa{
     @CsvBindByName(column = "HistoricoDeConsultas")
     private ArrayList<String> historicoConsultas;
 
-    public Pacientes(String nome, String cpf, boolean planoSaude, int idade, ArrayList<String> historicoConsultas) {
+    public Pacientes(String nome, String cpf, int id_pacientes, int idade, ArrayList<String> historicoConsultas) {
         super(nome, cpf);
-        this.planoSaude = planoSaude;
+        this.id_pacientes = id_pacientes;
         this.idade = idade;
-        this.historicoConsultas = historicoConsultas;
-    }
-
-    public boolean isPlanoSaude() {
-        return planoSaude;
-    }
-
-    public void setPlanoSaude(boolean planoSaude) {
-        this.planoSaude = planoSaude;
+        this.historicoConsultas = new ArrayList<>();
     }
 
     public int getIdade() {

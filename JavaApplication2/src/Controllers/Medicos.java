@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 public class Medicos extends Pessoa {
 
+    @CsvBindByName(column = "id_medicos")
+    private int id_medicos;
+
     @CsvBindByName(column = "Crm")
     private String crm;
 
@@ -18,8 +21,9 @@ public class Medicos extends Pessoa {
     @CsvBindByName(column = "AgendaHorarios")
     private ArrayList<String> agendaHorarios;
 
-    public Medicos(String nome, String cpf, String crm, String especialidade, float custoConsulta, ArrayList<String> agendaHorarios) {
+    public Medicos(String nome, String cpf, int id_medicos, String crm, String especialidade, float custoConsulta, ArrayList<String> agendaHorarios) {
         super(nome, cpf);
+        this.id_medicos = id_medicos;
         this.crm = crm;
         this.especialidade = especialidade;
         this.custoConsulta = custoConsulta;

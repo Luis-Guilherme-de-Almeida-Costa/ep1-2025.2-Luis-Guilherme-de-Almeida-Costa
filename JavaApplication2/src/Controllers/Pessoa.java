@@ -3,16 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controllers;
-import com.opencsv.bean.CsvBindByName;
 /**
  *
  * @author tung tung tung sahur
  */
 public abstract class Pessoa {
-    @CsvBindByName(column = "Nome")
     private String nome;
-    
-    @CsvBindByName(column = "Cpf")
     private String cpf;
     
     public Pessoa(String nome, String cpf) {

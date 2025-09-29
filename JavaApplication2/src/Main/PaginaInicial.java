@@ -1,18 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Main;
+import TelasInternas.CadastroPacientes;
 
-/**
- *
- * @author tung tung tung sahur
- */
 public class PaginaInicial extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PaginaInicial
-     */
     public PaginaInicial() {
         initComponents();
         jTable1.getTableHeader().setReorderingAllowed(false);
@@ -262,7 +252,9 @@ public class PaginaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_HomeMouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-
+        CadastroPacientes cp = new CadastroPacientes();
+        jDesktopPane1.add(cp);
+        cp.setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
