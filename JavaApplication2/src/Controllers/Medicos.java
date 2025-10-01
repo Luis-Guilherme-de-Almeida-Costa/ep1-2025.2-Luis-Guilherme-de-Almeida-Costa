@@ -1,24 +1,18 @@
 package Controllers;
 
-import com.opencsv.bean.CsvBindByName;
 
 import java.util.ArrayList;
 
 public class Medicos extends Pessoa {
 
-    @CsvBindByName(column = "id_medicos")
     private int id_medicos;
 
-    @CsvBindByName(column = "Crm")
     private String crm;
 
-    @CsvBindByName(column = "Especialidade")
     private String especialidade;
 
-    @CsvBindByName(column = "CustoConsulta")
     private float custoConsulta;
 
-    @CsvBindByName(column = "AgendaHorarios")
     private ArrayList<String> agendaHorarios;
 
     public Medicos(String nome, String cpf, int id_medicos, String crm, String especialidade, float custoConsulta, ArrayList<String> agendaHorarios) {

@@ -1,17 +1,14 @@
 package Controllers;
-import com.opencsv.bean.CsvBindByName;
+
 
 import java.util.ArrayList;
 
 public class Pacientes extends Pessoa{
 
-    @CsvBindByName(column = "id_pacientes")
     private int id_pacientes;
 
-    @CsvBindByName(column = "Idade")
     private int idade;
 
-    @CsvBindByName(column = "HistoricoDeConsultas")
     private String historicoConsultas;
 
     public Pacientes() {
@@ -47,5 +44,9 @@ public class Pacientes extends Pessoa{
 
     public void setHistoricoConsultas(String historicoConsultas) {
         this.historicoConsultas = historicoConsultas;
+    }
+
+    public String toCSV() {
+        return this.id_pacientes + "," + this.getNome() + "," + this.getCpf() + "," + this.idade + "," + this.historicoConsultas;
     }
 }
