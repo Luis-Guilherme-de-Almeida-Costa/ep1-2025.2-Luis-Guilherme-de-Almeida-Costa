@@ -68,7 +68,7 @@ public class Validator {
     public boolean isString(String valor, String campo) {
         if(!(valor != null && valor.matches("[A-Za-zÀ-ÿ\\s]+"))) {
             JOptionPane.showMessageDialog(null, "O campo " + campo + " deve ser inserido em formato de texto!");
-            return true;
+            return false;
         }
         return true;
     }
