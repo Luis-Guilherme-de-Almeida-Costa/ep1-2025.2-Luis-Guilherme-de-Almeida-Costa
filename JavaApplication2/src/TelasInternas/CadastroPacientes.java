@@ -24,7 +24,7 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
 
     private static final String FILE_PATH = "data/pacientes.csv";
 
-    Validator v1 = new Validator();
+    Validator validator = new Validator();
 
     public CadastroPacientes() {
         initComponents();
@@ -133,11 +133,6 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                 editarPacienteMouseClicked(evt);
             }
         });
-        editarPaciente.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                editarPacienteKeyPressed(evt);
-            }
-        });
 
         removerPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_off_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         removerPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -238,10 +233,6 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_editarPacienteMouseClicked
 
-    private void editarPacienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editarPacienteKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editarPacienteKeyPressed
-
     private void removerPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removerPacienteMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_removerPacienteMouseClicked
@@ -259,8 +250,13 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
     }
 
 
-    private void enviarPacienteMouseClicked(java.awt.event.MouseEvent evt) {                                            
-        v1.verificarNome(nomeTxt.getText());
+    private void enviarPacienteMouseClicked(java.awt.event.MouseEvent evt) {
+        if(!validator.verificarNome(nomeTxt.getText())) return;
+        if(!validator.verificarCPF(cpfTxt.getText())) return;
+        if(!validator.verificarIdade(idadeTxt.getText())) return;
+        if(!validator.isString(nomeTxt.getText(), "nome")) return;
+        if(!validator.isNumero(cpfTxt.getText(), "cpf")) return;
+        if(!validator.isNumero(idadeTxt.getText(), "idade")) return;
 
         Pacientes p1 = new Pacientes(nomeTxt.getText(), cpfTxt.getText(), 1, Integer.parseInt(idadeTxt.getText()), "");
 
