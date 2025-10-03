@@ -5,10 +5,12 @@
 package TelasInternas;
 
 import Controllers.Pacientes;
+import Modulos.IdAutomatico;
 import Modulos.Validator;
 
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,9 +24,13 @@ import java.util.Arrays;
  */
 public class CadastroPacientes extends javax.swing.JInternalFrame {
 
-    private static final String FILE_PATH = "data/pacientes.csv";
+    private static final String FILE_PATH_PACIENTES = "data/pacientes.csv";
 
     Validator validator = new Validator();
+
+    IdAutomatico idAutomatico = new IdAutomatico();
+
+    int id = -1;
 
     public CadastroPacientes() {
         initComponents();
@@ -53,7 +59,7 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
         editarPaciente = new javax.swing.JLabel();
         removerPaciente = new javax.swing.JLabel();
         pesquisarPaciente = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        reiniciarTabela = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -91,14 +97,14 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Nome", "Cpf", "Plano De Saúde", "Idade", "Internações"
+                "Id", "Nome", "Cpf", "Idade"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -118,13 +124,17 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        tabelaPacientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaPacientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaPacientes);
         if (tabelaPacientes.getColumnModel().getColumnCount() > 0) {
             tabelaPacientes.getColumnModel().getColumn(0).setResizable(false);
             tabelaPacientes.getColumnModel().getColumn(1).setResizable(false);
             tabelaPacientes.getColumnModel().getColumn(2).setResizable(false);
             tabelaPacientes.getColumnModel().getColumn(3).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(4).setResizable(false);
         }
 
         editarPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/edit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
@@ -148,10 +158,10 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+        reiniciarTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        reiniciarTabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel6MouseClicked(evt);
+                reiniciarTabelaMouseClicked(evt);
             }
         });
 
@@ -191,7 +201,7 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(pesquisarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(reiniciarTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE))
                         .addContainerGap())))
         );
@@ -222,7 +232,7 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
                         .addComponent(editarPaciente))
                     .addComponent(removerPaciente)
                     .addComponent(pesquisarPaciente)
-                    .addComponent(jLabel6))
+                    .addComponent(reiniciarTabela))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -230,7 +240,31 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarPacienteMouseClicked
-        // TODO add your handling code here:
+        if(id == -1) {
+            JOptionPane.showMessageDialog(null, "Nenhum paciente foi selecionado!");
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+            String linha;
+
+            while ((linha = reader.readLine()) != null) {
+                String[] data = linha.split(",");
+                if(Integer.parseInt(data[0]) == id) {
+                    data[1] = nomeTxt.getText();
+                    data[2] = cpfTxt.getText();
+                    data[3] = idadeTxt.getText();
+                }
+            }
+
+            nomeTxt.setText("");
+            cpfTxt.setText("");
+            idadeTxt.setText("");
+
+            id = -1;
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Houve algum erro na pesquisa dos pacientes!");
+        }
     }//GEN-LAST:event_editarPacienteMouseClicked
 
     private void removerPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removerPacienteMouseClicked
@@ -238,36 +272,126 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_removerPacienteMouseClicked
 
     private void pesquisarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pesquisarPacienteMouseClicked
-        // TODO add your handling code here:
+        String nomeUsuario = JOptionPane.showInputDialog("Digite o nome do usuário: ");
+        if(nomeUsuario == null) {
+            JOptionPane.showMessageDialog(null, "Operação cancelada!");
+            return;
+        }
+
+        if(nomeUsuario.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nada foi digitado!");
+            return;
+        }
+
+        DefaultTableModel modelTabela = (DefaultTableModel) tabelaPacientes.getModel();
+        modelTabela.setNumRows(0);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+            String linha;
+
+            if((linha = reader.readLine()) == null) {
+                JOptionPane.showMessageDialog(null, "Não existe nenhum paciente!");
+                return;
+            } else {
+                String[] data = linha.split(",");
+                Object[] dados = { Integer.parseInt(data[0]), data[1], data[2], Integer.parseInt(data[3]) };
+                modelTabela.addRow(dados);
+            }
+
+            while ((linha = reader.readLine()) != null) {
+                String[] data = linha.split(",");
+                if(data[1].toLowerCase().contains(nomeUsuario))  {
+                    Object[] dados = {Integer.parseInt(data[0]), data[1], data[2], Integer.parseInt(data[3])};
+                    modelTabela.addRow(dados);
+                }
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Houve algum erro na pesquisa dos pacientes!");
+        }
     }//GEN-LAST:event_pesquisarPacienteMouseClicked
 
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel6MouseClicked
+    private void reiniciarTabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reiniciarTabelaMouseClicked
+        DefaultTableModel modelTabela = (DefaultTableModel) tabelaPacientes.getModel();
+        modelTabela.setNumRows(0);
 
-    private void tabelaPacientesAncestorAdded(javax.swing.event.AncestorEvent evt) {                                              
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+            String linha;
 
+            if((linha = reader.readLine()) == null) {
+                return;
+            } else {
+                String[] data = linha.split(",");
+                Object[] dados = { Integer.parseInt(data[0]), data[1], data[2], Integer.parseInt(data[3]) };
+                modelTabela.addRow(dados);
+            }
+
+            while ((linha = reader.readLine()) != null) {
+                String[] data = linha.split(",");
+                Object[] dados = { Integer.parseInt(data[0]), data[1], data[2], Integer.parseInt(data[3]) };
+                modelTabela.addRow(dados);
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Houve algum erro na listagem automática dos IDs");
+        }
+    }//GEN-LAST:event_reiniciarTabelaMouseClicked
+
+    private void tabelaPacientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaPacientesMouseClicked
+        id = Integer.parseInt(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 0).toString());
+        nomeTxt.setText(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 1).toString());
+        cpfTxt.setText(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 2).toString());
+        idadeTxt.setText(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 3).toString());
+    }//GEN-LAST:event_tabelaPacientesMouseClicked
+
+    private void tabelaPacientesAncestorAdded(javax.swing.event.AncestorEvent evt) {
+        DefaultTableModel modelTabela = (DefaultTableModel) tabelaPacientes.getModel();
+        modelTabela.setNumRows(0);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+            String linha;
+
+            if((linha = reader.readLine()) == null) {
+                return;
+            } else {
+                String[] data = linha.split(",");
+                Object[] dados = { Integer.parseInt(data[0]), data[1], data[2], Integer.parseInt(data[3]) };
+                modelTabela.addRow(dados);
+            }
+
+            while ((linha = reader.readLine()) != null) {
+                String[] data = linha.split(",");
+                Object[] dados = { Integer.parseInt(data[0]), data[1], data[2], Integer.parseInt(data[3]) };
+                modelTabela.addRow(dados);
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Houve algum erro na listagem automática dos IDs");
+        }
     }
 
 
     private void enviarPacienteMouseClicked(java.awt.event.MouseEvent evt) {
-        if(!validator.verificarNome(nomeTxt.getText())) return;
-        if(!validator.verificarCPF(cpfTxt.getText())) return;
-        if(!validator.verificarIdade(idadeTxt.getText())) return;
         if(!validator.isString(nomeTxt.getText(), "nome")) return;
         if(!validator.isNumero(cpfTxt.getText(), "cpf")) return;
         if(!validator.isNumero(idadeTxt.getText(), "idade")) return;
+        if(!validator.verificarNome(nomeTxt.getText())) return;
+        if(!validator.verificarCPF(cpfTxt.getText())) return;
+        if(!validator.verificarIdade(idadeTxt.getText())) return;
 
-        Pacientes p1 = new Pacientes(nomeTxt.getText(), cpfTxt.getText(), 1, Integer.parseInt(idadeTxt.getText()), "");
+        Pacientes p1 = new Pacientes(nomeTxt.getText(), cpfTxt.getText(), idAutomatico.criarIdAutomatico(0, FILE_PATH_PACIENTES), Integer.parseInt(idadeTxt.getText()), "");
 
         criarPastaSeNaoExistir();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_PACIENTES, true))) {
             writer.write(p1.toCSV());
             writer.newLine();
-            JOptionPane.showMessageDialog(null, "Paciente criado com sucesso!" + p1.toCSV());
+            JOptionPane.showMessageDialog(null, "Paciente criado com sucesso!");
+            nomeTxt.setText("");
+            cpfTxt.setText("");
+            idadeTxt.setText("");
         } catch(IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Houve algum erro na criação do paciente, por favor feche e abra a aplicação.");
         }
     }
 
@@ -287,10 +411,10 @@ public class CadastroPacientes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nomeTxt;
     private javax.swing.JLabel pesquisarPaciente;
+    private javax.swing.JLabel reiniciarTabela;
     private javax.swing.JLabel removerPaciente;
     private javax.swing.JTable tabelaPacientes;
     // End of variables declaration//GEN-END:variables
