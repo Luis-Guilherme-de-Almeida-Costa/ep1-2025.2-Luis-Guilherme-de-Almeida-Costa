@@ -13,19 +13,15 @@ public class Medicos extends Pessoa {
 
     private float custoConsulta;
 
-    private ArrayList<String> agendaHorarios;
+    private String agendaHorarios;
 
-    public Medicos(String nome, String cpf, int id_medicos, String crm, String especialidade, float custoConsulta, ArrayList<String> agendaHorarios) {
+    public Medicos(String nome, String cpf, int id_medicos, String crm, String especialidade, float custoConsulta, String agendaHorarios) {
         super(nome, cpf);
         this.id_medicos = id_medicos;
         this.crm = crm;
         this.especialidade = especialidade;
         this.custoConsulta = custoConsulta;
         this.agendaHorarios = agendaHorarios;
-    }
-
-    public String getCrm() {
-        return crm;
     }
 
     public void setCrm(String crm) {
@@ -36,15 +32,19 @@ public class Medicos extends Pessoa {
         return especialidade;
     }
 
+    public String getCrm() {
+        return crm;
+    }
+
     public void setEspecialidade(String especialidade) {
         this.especialidade = especialidade;
     }
 
-    public ArrayList<String> getAgendaHorarios() {
+    public String getAgendaHorarios() {
         return agendaHorarios;
     }
 
-    public void setAgendaHorarios(ArrayList<String> agendaHorarios) {
+    public void setAgendaHorarios(String agendaHorarios) {
         this.agendaHorarios = agendaHorarios;
     }
 
@@ -54,6 +54,10 @@ public class Medicos extends Pessoa {
 
     public void setCustoConsulta(float custoConsulta) {
         this.custoConsulta = custoConsulta;
+    }
+
+    public String toCSV() {
+        return this.id_medicos + "," + this.getNome() + "," + this.getCpf() + "," + this.crm + "," + this.especialidade + "," + this.custoConsulta + "," + this.agendaHorarios;
     }
 }
 

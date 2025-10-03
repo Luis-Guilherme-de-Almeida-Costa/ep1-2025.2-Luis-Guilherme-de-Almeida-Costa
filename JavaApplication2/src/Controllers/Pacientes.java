@@ -12,7 +12,6 @@ public class Pacientes extends Pessoa{
     private String historicoConsultas;
 
     public Pacientes() {
-
     }
 
     public Pacientes(String nome, String cpf, int id_pacientes, int idade, String historicoConsultas) {

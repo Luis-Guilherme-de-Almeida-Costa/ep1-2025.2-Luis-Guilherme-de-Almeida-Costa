@@ -1,8 +1,18 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package Main;
+/**
+ *
+ * @author failh
+ */
 import TelasInternas.CadastroPacientes;
 
 public class PaginaInicial extends javax.swing.JFrame {
-
+    /**
+     * Creates new form PaginaInicial
+     */
     public PaginaInicial() {
         initComponents();
         jTable1.getTableHeader().setReorderingAllowed(false);
@@ -340,4 +350,5 @@ public class PaginaInicial extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    // End of variables declaration                   
 }
