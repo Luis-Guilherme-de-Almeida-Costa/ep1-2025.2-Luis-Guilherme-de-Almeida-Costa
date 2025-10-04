@@ -7,6 +7,7 @@ package Main;
  *
  * @author failh
  */
+import TelasInternas.CadastroMedicos;
 import TelasInternas.CadastroPacientes;
 
 public class PaginaInicial extends javax.swing.JFrame {
@@ -268,7 +269,9 @@ public class PaginaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        // TODO add your handling code here:
+        CadastroMedicos cm = new CadastroMedicos();
+        jDesktopPane1.add(cm);
+        cm.setVisible(true);
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked

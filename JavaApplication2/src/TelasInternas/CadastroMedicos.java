@@ -23,7 +23,7 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
 
     private static final String FILE_PATH_MEDICOS = "data/medicos.csv";
 
-    private ArrayList<String> listaHorarios;
+    private ArrayList<String> listaHorarios = new ArrayList<>();
 
     Validator validator = new Validator();
 
@@ -390,7 +390,6 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
                 if(Integer.parseInt(data[0]) == id) {
                     data[1] = nomeTxt.getText();
                     data[2] = cpfTxt.getText();
-                    data[3] = idadeTxt.getText();
                     linha = String.join(",", data);
                 }
                 linhas.add(linha);
@@ -410,7 +409,6 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
 
         nomeTxt.setText("");
         cpfTxt.setText("");
-        idadeTxt.setText("");
         id = -1;
 
         JOptionPane.showMessageDialog(null, "Paciente editado com sucesso!");
@@ -446,7 +444,6 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
 
         nomeTxt.setText("");
         cpfTxt.setText("");
-        idadeTxt.setText("");
         id = -1;
 
         JOptionPane.showMessageDialog(null, "Paciente removido com sucesso!");
@@ -537,6 +534,7 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_enviarHorarioMouseClicked
 
     private void tabelaMedicosAncestorAdded(javax.swing.event.AncestorEvent evt) {
+        /*
         DefaultTableModel modelTabela = (DefaultTableModel) tabelaMedicos.getModel();
         modelTabela.setNumRows(0);
 
@@ -560,6 +558,8 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Houve algum erro na listagem automática dos IDs");
         }
+
+         */
     }
 
 
@@ -576,7 +576,7 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         }
 
         String horariosEmLinha = String.join(";", listaHorarios);
-        Medicos m1 = new Medicos(nomeTxt.getText(), cpfTxt.getText(), idAutomatico.criarIdAutomatico(0, FILE_PATH_MEDICOS), crmTxt.getText(), (String) especialidades.getSelectedItem(), Float.parseFloat(custoConsultaTxt.getText()),horariosEmLinha);
+        Medicos m1 = new Medicos(nomeTxt.getText(), cpfTxt.getText(), idAutomatico.criarIdAutomatico(0, FILE_PATH_MEDICOS), crmTxt.getText(), (String) especialidades.getSelectedItem(), Float.parseFloat(custoConsultaTxt.getText()), horariosEmLinha);
 
         criarPastaSeNaoExistir();
 
@@ -587,10 +587,11 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
             nomeTxt.setText("");
             cpfTxt.setText("");
             crmTxt.setText("");
+            custoConsultaTxt.setText("");
             especialidades.setSelectedIndex(0);
             agendaTxt.setText("");
         } catch(IOException e) {
-            JOptionPane.showMessageDialog(null, "Houve algum erro na criação do paciente, por favor reinicie a aplicação.");
+            JOptionPane.showMessageDialog(null, "Houve algum erro na criação do médico, por favor reinicie a aplicação.");
         }
     }
 
