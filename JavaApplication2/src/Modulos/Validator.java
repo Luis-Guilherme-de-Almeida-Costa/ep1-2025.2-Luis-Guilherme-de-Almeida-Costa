@@ -57,8 +57,36 @@ public class Validator {
         return true;
     }
 
-    public boolean isNumero(String valor, String campo) {
+    public boolean verificarCrm(String crm) {
+        String regex = "^\\d{8}-\\d/(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO|BR)$";
+        if (crm.matches(regex)) {
+            JOptionPane.showMessageDialog(null, "O Conselho Federal de Medicina informado é inválido.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean verificarHorario(String horario) {
+        String padrao = "^\\d{2}/(0[1-9]|1[0-2])/([0-2][0-9]|3[0-1]),([01][0-9]|2[0-3]):[0-5][0-9]$";
+        if (!horario.matches(padrao)) {
+            JOptionPane.showMessageDialog(null, "Formato de data e hora inserido inválido!");
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isNumeroInteiro(String valor, String campo) {
         if(!(valor != null && valor.matches("\\d+"))) {
+            JOptionPane.showMessageDialog(null, "O campo " + campo + " deve ser inserido em formato de número!");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isNumero(String valor, String campo) {
+        if(!(valor != null && valor.matches("\\d+(\\.\\d+)?"))) {
             JOptionPane.showMessageDialog(null, "O campo " + campo + " deve ser inserido em formato de número!");
             return false;
         }

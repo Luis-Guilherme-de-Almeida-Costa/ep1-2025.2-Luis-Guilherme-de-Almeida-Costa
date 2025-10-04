@@ -4,6 +4,7 @@
  */
 package TelasInternas;
 
+import Controllers.Medicos;
 import Controllers.Pacientes;
 import Modulos.IdAutomatico;
 import Modulos.Validator;
@@ -20,7 +21,9 @@ import java.util.Arrays;
 
 public class CadastroMedicos extends javax.swing.JInternalFrame {
 
-    private static final String FILE_PATH_PACIENTES = "data/pacientes.csv";
+    private static final String FILE_PATH_MEDICOS = "data/medicos.csv";
+
+    private ArrayList<String> listaHorarios;
 
     Validator validator = new Validator();
 
@@ -30,7 +33,8 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
 
     public CadastroMedicos() {
         initComponents();
-        tabelaPacientes.getTableHeader().setReorderingAllowed(false);
+        tabelaMedicos.getTableHeader().setReorderingAllowed(false);
+        tabelaHorarios.getTableHeader().setReorderingAllowed(false);
     }
 
     /**
@@ -46,26 +50,34 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         nomeTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         cpfTxt = new javax.swing.JTextField();
-        idadeTxt = new javax.swing.JTextField();
-        enviarPaciente = new javax.swing.JLabel();
+        enviarMedico = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaPacientes = new javax.swing.JTable();
-        editarPaciente = new javax.swing.JLabel();
-        removerPaciente = new javax.swing.JLabel();
-        pesquisarPaciente = new javax.swing.JLabel();
-        reiniciarTabela = new javax.swing.JLabel();
-        idadeTxt1 = new javax.swing.JTextField();
+        tabelaMedicos = new javax.swing.JTable();
+        editarMedico = new javax.swing.JLabel();
+        removerMedico = new javax.swing.JLabel();
+        pesquisarMedico = new javax.swing.JLabel();
+        reiniciarTabelaAgenda = new javax.swing.JLabel();
+        crmTxt = new javax.swing.JTextField();
         Crm = new javax.swing.JLabel();
         Crm1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        especialidades = new javax.swing.JComboBox<>();
+        Crm2 = new javax.swing.JLabel();
+        agendaTxt = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabelaHorarios = new javax.swing.JTable();
+        reiniciarTabelaMedicos = new javax.swing.JLabel();
+        enviarHorario = new javax.swing.JLabel();
+        Crm3 = new javax.swing.JLabel();
+        Crm4 = new javax.swing.JLabel();
+        custoConsultaTxt = new javax.swing.JTextField();
+        Crm5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jLabel1.setText("Cadastro de Pacientes");
+        jLabel1.setText("Cadastro de Médicos");
 
         jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         jLabel3.setText("Nome");
@@ -76,35 +88,29 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         jLabel4.setText("Cadastro de Pessoa Física");
 
-        jLabel5.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        jLabel5.setText("Idade");
-
         cpfTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         cpfTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        idadeTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        idadeTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        enviarPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_add_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        enviarPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        enviarMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_add_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        enviarMedico.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                enviarPacienteMouseClicked(evt);
+                enviarMedicoMouseClicked(evt);
             }
         });
 
-        tabelaPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Nome", "Cpf", "Idade"
+                "Id", "Nome", "Cpf", "Crm", "Especialidade"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -115,58 +121,59 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabelaPacientes.addAncestorListener(new javax.swing.event.AncestorListener() {
+        tabelaMedicos.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                tabelaPacientesAncestorAdded(evt);
+                tabelaMedicosAncestorAdded(evt);
             }
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
-        tabelaPacientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaMedicos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaPacientesMouseClicked(evt);
+                tabelaMedicosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaPacientes);
-        if (tabelaPacientes.getColumnModel().getColumnCount() > 0) {
-            tabelaPacientes.getColumnModel().getColumn(0).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(1).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(2).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane1.setViewportView(tabelaMedicos);
+        if (tabelaMedicos.getColumnModel().getColumnCount() > 0) {
+            tabelaMedicos.getColumnModel().getColumn(0).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(1).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(2).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(3).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        editarPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/edit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        editarPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        editarMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/edit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        editarMedico.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editarPacienteMouseClicked(evt);
+                editarMedicoMouseClicked(evt);
             }
         });
 
-        removerPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_off_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        removerPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        removerMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/person_off_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        removerMedico.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                removerPacienteMouseClicked(evt);
+                removerMedicoMouseClicked(evt);
             }
         });
 
-        pesquisarPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/search_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        pesquisarPaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        pesquisarMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/search_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pesquisarMedico.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pesquisarPacienteMouseClicked(evt);
+                pesquisarMedicoMouseClicked(evt);
             }
         });
 
-        reiniciarTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        reiniciarTabela.addMouseListener(new java.awt.event.MouseAdapter() {
+        reiniciarTabelaAgenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        reiniciarTabelaAgenda.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                reiniciarTabelaMouseClicked(evt);
+                reiniciarTabelaAgendaMouseClicked(evt);
             }
         });
 
-        idadeTxt1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        idadeTxt1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        crmTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        crmTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         Crm.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         Crm.setText("Conselho Regional de Medicina");
@@ -174,7 +181,71 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         Crm1.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         Crm1.setText("Especialidade");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Cardiologia", "Pediatria", "Ortopedia", "Dermatologia", "Neurologia", "Oftalmologia", "Otorrinolaringologia", "Ginecologia", "Obstetrícia", "Urologia", "Oncologia", "Endocrinologia", "Reumatologia", "Psiquiatria", "Nefrologia", "Hematologia", "Gastroenterologia", "Pneumologia", "Cirurgia Geral", "Cirurgia Plástica", "Anestesiologia", "Infectologia", "Nutrologia", "Geriatria" }));
+        especialidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Cardiologia", "Pediatria", "Ortopedia", "Dermatologia", "Neurologia", "Oftalmologia", "Otorrinolaringologia", "Ginecologia", "Obstetrícia", "Urologia", "Oncologia", "Endocrinologia", "Reumatologia", "Psiquiatria", "Nefrologia", "Hematologia", "Gastroenterologia", "Pneumologia", "Cirurgia Geral", "Cirurgia Plástica", "Anestesiologia", "Infectologia", "Nutrologia", "Geriatria" }));
+
+        Crm2.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        Crm2.setText("Agenda de Horários");
+
+        agendaTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        agendaTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        tabelaHorarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Dia", "Hora"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tabelaHorarios);
+        if (tabelaHorarios.getColumnModel().getColumnCount() > 0) {
+            tabelaHorarios.getColumnModel().getColumn(0).setResizable(false);
+            tabelaHorarios.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        reiniciarTabelaMedicos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/refresh_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        reiniciarTabelaMedicos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reiniciarTabelaMedicosMouseClicked(evt);
+            }
+        });
+
+        enviarHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/add_28dp_000000_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        enviarHorario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                enviarHorarioMouseClicked(evt);
+            }
+        });
+
+        Crm3.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        Crm3.setText("Deve ser inserido no formato \"25/10/04,01:30\", ou seja, a data seguida das horas separadas por vírgula.");
+
+        Crm4.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        Crm4.setText("Deve ser inserido no formato \"00000000-0/BR\", ou seja, oito digitos e o estado separado por uma barra.");
+
+        custoConsultaTxt.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        custoConsultaTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        Crm5.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        Crm5.setText("Custo da Consulta");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -190,45 +261,58 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(idadeTxt1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idadeTxt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nomeTxt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cpfTxt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(enviarPaciente)
-                                        .addGap(211, 211, 211)
-                                        .addComponent(editarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(180, 180, 180)
-                                        .addComponent(removerPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(enviarMedico)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(removerMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(24, 24, 24))
+                            .addComponent(nomeTxt)
+                            .addComponent(cpfTxt)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
+                            .addComponent(crmTxt)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(295, 295, 295)
+                                        .addComponent(editarMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(Crm, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Crm4)
+                                    .addComponent(especialidades, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Crm1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(agendaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(enviarHorario))
+                                    .addComponent(Crm2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Crm3))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(custoConsultaTxt)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(Crm5, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE))))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(pesquisarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(reiniciarTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE))
-                        .addContainerGap())))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(reiniciarTabelaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pesquisarMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(reiniciarTabelaMedicos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(2, 2, 2)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -237,49 +321,68 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(idadeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Crm)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(idadeTxt1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Crm1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(crmTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(enviarPaciente)
-                        .addComponent(editarPaciente))
-                    .addComponent(removerPaciente)
-                    .addComponent(pesquisarPaciente)
-                    .addComponent(reiniciarTabela))
-                .addContainerGap(40, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Crm4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Crm5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(custoConsultaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Crm1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(especialidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Crm2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(agendaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Crm3))
+                            .addComponent(enviarHorario))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pesquisarMedico)
+                            .addComponent(reiniciarTabelaMedicos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(reiniciarTabelaAgenda)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(editarMedico)
+                        .addComponent(removerMedico)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(enviarMedico))))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void editarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarPacienteMouseClicked
+    private void editarMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarMedicoMouseClicked
         if(id == -1) {
             JOptionPane.showMessageDialog(null, "Nenhum paciente foi selecionado!");
             return;
         }
 
         if(!validator.isString(nomeTxt.getText(), "nome")) return;
-        if(!validator.isNumero(cpfTxt.getText(), "cpf")) return;
-        if(!validator.isNumero(idadeTxt.getText(), "idade")) return;
+        if(!validator.isNumeroInteiro(cpfTxt.getText(), "cpf")) return;
         if(!validator.verificarNome(nomeTxt.getText())) return;
         if(!validator.verificarCPF(cpfTxt.getText())) return;
-        if(!validator.verificarIdade(idadeTxt.getText())) return;
 
         List<String> linhas = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_MEDICOS))) {
             String linha;
 
             while ((linha = reader.readLine()) != null) {
@@ -296,7 +399,7 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Houve algum erro na edição dos pacientes!");
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_PACIENTES))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_MEDICOS))) {
             for (String l : linhas) {
                 writer.write(l);
                 writer.newLine();
@@ -311,13 +414,13 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         id = -1;
 
         JOptionPane.showMessageDialog(null, "Paciente editado com sucesso!");
-    }//GEN-LAST:event_editarPacienteMouseClicked
+    }//GEN-LAST:event_editarMedicoMouseClicked
 
-    private void removerPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removerPacienteMouseClicked
+    private void removerMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removerMedicoMouseClicked
         // TODO add your handling code here:
         List<String> linhas = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_MEDICOS))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] data = linha.split(",");
@@ -332,7 +435,7 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_PACIENTES))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_MEDICOS))) {
             for (String l : linhas) {
                 writer.write(l);
                 writer.newLine();
@@ -347,9 +450,9 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         id = -1;
 
         JOptionPane.showMessageDialog(null, "Paciente removido com sucesso!");
-    }//GEN-LAST:event_removerPacienteMouseClicked
+    }//GEN-LAST:event_removerMedicoMouseClicked
 
-    private void pesquisarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pesquisarPacienteMouseClicked
+    private void pesquisarMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pesquisarMedicoMouseClicked
         String nomeUsuario = JOptionPane.showInputDialog("Digite o nome do usuário: ");
         if(nomeUsuario == null) {
             JOptionPane.showMessageDialog(null, "Operação cancelada!");
@@ -361,10 +464,10 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
             return;
         }
 
-        DefaultTableModel modelTabela = (DefaultTableModel) tabelaPacientes.getModel();
+        DefaultTableModel modelTabela = (DefaultTableModel) tabelaMedicos.getModel();
         modelTabela.setNumRows(0);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_MEDICOS))) {
             String linha;
 
             if((linha = reader.readLine()) == null) {
@@ -387,13 +490,13 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Houve algum erro na pesquisa dos pacientes!");
         }
-    }//GEN-LAST:event_pesquisarPacienteMouseClicked
+    }//GEN-LAST:event_pesquisarMedicoMouseClicked
 
-    private void reiniciarTabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reiniciarTabelaMouseClicked
-        DefaultTableModel modelTabela = (DefaultTableModel) tabelaPacientes.getModel();
+    private void reiniciarTabelaAgendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reiniciarTabelaAgendaMouseClicked
+        DefaultTableModel modelTabela = (DefaultTableModel) tabelaMedicos.getModel();
         modelTabela.setNumRows(0);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_MEDICOS))) {
             String linha;
 
             if((linha = reader.readLine()) == null) {
@@ -413,20 +516,31 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Houve algum erro na listagem automática dos IDs");
         }
-    }//GEN-LAST:event_reiniciarTabelaMouseClicked
+    }//GEN-LAST:event_reiniciarTabelaAgendaMouseClicked
 
-    private void tabelaPacientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaPacientesMouseClicked
-        id = Integer.parseInt(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 0).toString());
-        nomeTxt.setText(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 1).toString());
-        cpfTxt.setText(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 2).toString());
-        idadeTxt.setText(tabelaPacientes.getValueAt(tabelaPacientes.getSelectedRow(), 3).toString());
-    }//GEN-LAST:event_tabelaPacientesMouseClicked
+    private void tabelaMedicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMedicosMouseClicked
+        id = Integer.parseInt(tabelaMedicos.getValueAt(tabelaMedicos.getSelectedRow(), 0).toString());
+        nomeTxt.setText(tabelaMedicos.getValueAt(tabelaMedicos.getSelectedRow(), 1).toString());
+        cpfTxt.setText(tabelaMedicos.getValueAt(tabelaMedicos.getSelectedRow(), 2).toString());
+        crmTxt.setText(tabelaMedicos.getValueAt(tabelaMedicos.getSelectedRow(), 3).toString());
+        especialidades.setSelectedItem(tabelaMedicos.getValueAt(tabelaMedicos.getSelectedRow(), 4).toString());
+    }//GEN-LAST:event_tabelaMedicosMouseClicked
 
-    private void tabelaPacientesAncestorAdded(javax.swing.event.AncestorEvent evt) {
-        DefaultTableModel modelTabela = (DefaultTableModel) tabelaPacientes.getModel();
+    private void reiniciarTabelaMedicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reiniciarTabelaMedicosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reiniciarTabelaMedicosMouseClicked
+
+    private void enviarHorarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enviarHorarioMouseClicked
+        if(!validator.verificarHorario(agendaTxt.getText())) return;
+
+        listaHorarios.add(agendaTxt.getText());
+    }//GEN-LAST:event_enviarHorarioMouseClicked
+
+    private void tabelaMedicosAncestorAdded(javax.swing.event.AncestorEvent evt) {
+        DefaultTableModel modelTabela = (DefaultTableModel) tabelaMedicos.getModel();
         modelTabela.setNumRows(0);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_PACIENTES))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_MEDICOS))) {
             String linha;
 
             if((linha = reader.readLine()) == null) {
@@ -449,27 +563,34 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
     }
 
 
-    private void enviarPacienteMouseClicked(java.awt.event.MouseEvent evt) {
+    private void enviarMedicoMouseClicked(java.awt.event.MouseEvent evt) {
         if(!validator.isString(nomeTxt.getText(), "nome")) return;
-        if(!validator.isNumero(cpfTxt.getText(), "cpf")) return;
-        if(!validator.isNumero(idadeTxt.getText(), "idade")) return;
+        if(!validator.isNumeroInteiro(cpfTxt.getText(), "cpf")) return;
         if(!validator.verificarNome(nomeTxt.getText())) return;
         if(!validator.verificarCPF(cpfTxt.getText())) return;
-        if(!validator.verificarIdade(idadeTxt.getText())) return;
+        if(!validator.verificarCrm(crmTxt.getText())) return;
+        if(!validator.isNumeroInteiro(custoConsultaTxt.getText(), "custo da consulta")) return;
+        if(listaHorarios.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhuma data foi inserida para atendimento do médico! Operação cancelada!");
+            return;
+        }
 
-        Pacientes p1 = new Pacientes(nomeTxt.getText(), cpfTxt.getText(), idAutomatico.criarIdAutomatico(0, FILE_PATH_PACIENTES), Integer.parseInt(idadeTxt.getText()), "");
+        String horariosEmLinha = String.join(";", listaHorarios);
+        Medicos m1 = new Medicos(nomeTxt.getText(), cpfTxt.getText(), idAutomatico.criarIdAutomatico(0, FILE_PATH_MEDICOS), crmTxt.getText(), (String) especialidades.getSelectedItem(), Float.parseFloat(custoConsultaTxt.getText()),horariosEmLinha);
 
         criarPastaSeNaoExistir();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_PACIENTES, true))) {
-            writer.write(p1.toCSV());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_MEDICOS, true))) {
+            writer.write(m1.toCSV());
             writer.newLine();
-            JOptionPane.showMessageDialog(null, "Paciente criado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Médico criado com sucesso!");
             nomeTxt.setText("");
             cpfTxt.setText("");
-            idadeTxt.setText("");
+            crmTxt.setText("");
+            especialidades.setSelectedIndex(0);
+            agendaTxt.setText("");
         } catch(IOException e) {
-            JOptionPane.showMessageDialog(null, "Houve algum erro na criação do paciente, por favor feche e abra a aplicação.");
+            JOptionPane.showMessageDialog(null, "Houve algum erro na criação do paciente, por favor reinicie a aplicação.");
         }
     }
 
@@ -483,21 +604,29 @@ public class CadastroMedicos extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Crm;
     private javax.swing.JLabel Crm1;
+    private javax.swing.JLabel Crm2;
+    private javax.swing.JLabel Crm3;
+    private javax.swing.JLabel Crm4;
+    private javax.swing.JLabel Crm5;
+    private javax.swing.JTextField agendaTxt;
     private javax.swing.JTextField cpfTxt;
-    private javax.swing.JLabel editarPaciente;
-    private javax.swing.JLabel enviarPaciente;
-    private javax.swing.JTextField idadeTxt;
-    private javax.swing.JTextField idadeTxt1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField crmTxt;
+    private javax.swing.JTextField custoConsultaTxt;
+    private javax.swing.JLabel editarMedico;
+    private javax.swing.JLabel enviarHorario;
+    private javax.swing.JLabel enviarMedico;
+    private javax.swing.JComboBox<String> especialidades;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField nomeTxt;
-    private javax.swing.JLabel pesquisarPaciente;
-    private javax.swing.JLabel reiniciarTabela;
-    private javax.swing.JLabel removerPaciente;
-    private javax.swing.JTable tabelaPacientes;
+    private javax.swing.JLabel pesquisarMedico;
+    private javax.swing.JLabel reiniciarTabelaAgenda;
+    private javax.swing.JLabel reiniciarTabelaMedicos;
+    private javax.swing.JLabel removerMedico;
+    private javax.swing.JTable tabelaHorarios;
+    private javax.swing.JTable tabelaMedicos;
     // End of variables declaration//GEN-END:variables
 }
