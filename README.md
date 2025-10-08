@@ -54,14 +54,38 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 ## Prints da Execução
 
 1. Menu Principal:  
-   ![Inserir Print 1](caminho/do/print1.png)
+   prints/Home.png
 
 2. Cadastro de Médico:  
-   ![Inserir Print 2](caminho/do/print2.png)
+   prints/Cadastro de Médico.png
 
-3. Relatório de ?:  
-   ![Inserir Print 3](caminho/do/print3.png)
+3. Cadastro de Pacientes:  
+   prints/Cadastro de Pacientes.png
 
+4. Cadastro de Planos:
+   prints/Cadastro de Planos de Saúde.png
+
+5. Administração da Internação:
+   prints/Administração da Internação.png
+
+6. Administração das Consultas:
+   prints/Administração das Consultas.png
+
+7. Agendamento de Consultas:
+   prints/Agendamento de Consultas.png
+
+8. Estatística das Consultas:
+   prints/Estatística das Consultas.png
+
+9. Histórico Médicos:
+    prints/Histórico Médicos.png
+
+10. Historico Pacientes:
+    prints/Historico Pacientes.png
+
+11. Internação dos pacientes:
+    prints/Internação dos pacientes.png
+    
 ---
 
 ---
